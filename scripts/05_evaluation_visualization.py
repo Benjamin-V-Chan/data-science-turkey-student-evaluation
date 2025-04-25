@@ -1,9 +1,27 @@
-# 1. Import pandas, os, matplotlib.pyplot, sklearn.metrics, sklearn.decomposition, joblib, json
-# 2. Define load_models(path) → load clf, kmeans, report json
-# 3. Define load_test_data(path) → read X_test, y_test
-# 4. Define plot_confusion_matrix(...)
-# 5. Define plot_roc_curve(...)
-# 6. Define plot_clusters(kmeans, X, output_dir):
-#      - PCA(n_components=2) → scatter colored by kmeans.labels_
-# 7. Define generate_report(report_data, output_file) → write Markdown with embedded JSON
-# 8. main(): orchestrate all steps, saving figs to ../outputs/figures and report to ../outputs/report.md
+import pandas as pd
+import os
+import matplotlib.pyplot as plt
+import joblib
+import json
+from sklearn.metrics import ConfusionMatrixDisplay, roc_curve, auc
+from sklearn.decomposition import PCA
+
+def load_models(path):
+    clf = joblib.load(os.path.join(path, 'random_forest_classifier.joblib'))
+    kmeans = joblib.load(os.path.join(path, 'kmeans_clustering.joblib'))
+    report = json.load(open(os.path.join(path, 'classification_report.json')))
+    return clf, kmeans, report
+
+def load_test_data(path):
+    X_test = pd.read_csv(os.path.join(path, 'X_test.csv'))
+    y_test = pd.read_csv(os.path.join(path, 'y_test.csv')).squeeze()
+    return X_test, y_test
+
+def plot_confusion_matrix(clf, X_test, y_test, output_dir):
+    os.makedirs(output_dir, exist_ok=True)
+    disp = ConfusionMatrixDisplay.from_estimator(clf, X_test, y_test, normalize='true')
+    plt.title('Normalized Confusion Matrix')
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, 'confusion_matrix.png'))
+    plt.close()
+
