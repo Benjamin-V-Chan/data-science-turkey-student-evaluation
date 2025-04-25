@@ -56,3 +56,30 @@ def plot_clusters(kmeans, X, output_dir):
     plt.savefig(os.path.join(output_dir, 'clusters_pca.png'))
     plt.close()
 
+def generate_report(report_data, output_file):
+    with open(output_file, 'w') as f:
+        f.write('# Model Performance Report\n\n')
+        f.write('## Classification Report\n')
+        f.write('```json\n')
+        json.dump(report_data, f, indent=4)
+        f.write('\n```\n')
+
+def main():
+    model_dir   = os.path.join('..', 'outputs', 'models')
+    feature_dir = os.path.join('..', 'outputs', 'features')
+    fig_dir     = os.path.join('..', 'outputs', 'figures')
+    report_path = os.path.join('..', 'outputs', 'report.md')
+
+    clf, kmeans, report_data = load_models(model_dir)
+    X_test, y_test = load_test_data(feature_dir)
+    plot_confusion_matrix(clf, X_test, y_test, fig_dir)
+    plot_roc_curve(clf, X_test, y_test, fig_dir)
+
+    # for clustering visualization, use training set
+    X_train = pd.read_csv(os.path.join(feature_dir, 'X_train.csv'))
+    plot_clusters(kmeans, X_train, fig_dir)
+
+    generate_report(report_data, report_path)
+
+if __name__ == "__main__":
+    main()
