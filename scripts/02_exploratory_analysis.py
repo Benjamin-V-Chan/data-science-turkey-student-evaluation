@@ -1,13 +1,19 @@
-# 1. Import pandas, matplotlib.pyplot, os
-# 2. Define load_data(path) → reads cleaned CSV
-# 3. Define plot_distribution(df, cols, output_dir):
-#      - for each col: histogram → savefig
-# 4. Define plot_correlations(df, cols, output_dir):
-#      - compute df[cols].corr()
-#      - draw heatmap via plt.imshow → savefig
-# 5. main():
-#      - data_path = '../outputs/processed/processed_data.csv'
-#      - output_dir = '../outputs/figures'
-#      - q_cols = [Q1–Q28], cat_cols = ['attendance','difficulty']
-#      - plot_distribution(df, q_cols+cat_cols, output_dir)
-#      - plot_correlations(df, q_cols+cat_cols, output_dir)
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+def load_data(path):
+    return pd.read_csv(path)
+
+def plot_distribution(df, cols, output_dir):
+    os.makedirs(output_dir, exist_ok=True)
+    for col in cols:
+        plt.figure()
+        df[col].hist(bins=5)
+        plt.title(f'Distribution of {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frequency')
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_dir, f'{col}_distribution.png'))
+        plt.close()
+
