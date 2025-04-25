@@ -22,3 +22,26 @@ def evaluate_classification(clf, X_test, y_test):
     report = classification_report(y_test, clf.predict(X_test), output_dict=True)
     return report
 
+def train_clustering(X_train, k=3):
+    km = KMeans(n_clusters=k, random_state=42)
+    km.fit(X_train)
+    return km
+
+def save_artifacts(models, reports):
+    out_dir = os.path.join('..', 'outputs', 'models')
+    os.makedirs(out_dir, exist_ok=True)
+    joblib.dump(models['clf'],  os.path.join(out_dir, 'random_forest_classifier.joblib'))
+    joblib.dump(models['kmeans'], os.path.join(out_dir, 'kmeans_clustering.joblib'))
+    with open(os.path.join(out_dir, 'classification_report.json'), 'w') as f:
+        json.dump(reports['classification'], f, indent=4)
+
+def main():
+    feat_dir = os.path.join('..', 'outputs', 'features')
+    X_train, X_test, y_train, y_test = load_splits(feat_dir)
+    clf   = train_classification_model(X_train, y_train)
+    report = evaluate_classification(clf, X_test, y_test)
+    kmeans = train_clustering(X_train, k=3)
+    save_artifacts({'clf': clf, 'kmeans': kmeans}, {'classification': report})
+
+if __name__ == "__main__":
+    main()
