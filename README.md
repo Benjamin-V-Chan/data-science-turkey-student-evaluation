@@ -53,3 +53,15 @@ project-root/
    python scripts/05_evaluation_visualization.py
    ```
 
+## Requirements
+- Python 3.7 or higher
+- pandas
+- matplotlib
+- scikit-learn
+- joblib
+
+## Acknowledgments
+- **Dataset name:** Turkiye Student Evaluation  
+- **Dataset author:** Adil Shamim  
+- **Dataset source:** https://www.kaggle.com/datasets/adilshamim8/turkiye-student-evaluation
+
