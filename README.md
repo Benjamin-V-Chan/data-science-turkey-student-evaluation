@@ -24,3 +24,32 @@ project-root/
 └── README.md                            # this documentation
 ```
 
+## Usage
+1. **Setup the Project:**
+   - Clone the repository.
+   - Ensure you have Python installed.
+   - Install required dependencies using the requirements.txt file.
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Run data preprocessing:**
+   ```bash
+   python scripts/01_data_preprocessing.py
+   ```
+3. **Run exploratory analysis:**
+   ```bash
+   python scripts/02_exploratory_analysis.py
+   ```
+4. **Run feature engineering:**
+   ```bash
+   python scripts/03_feature_engineering.py
+   ```
+5. **Run modeling:**
+   ```bash
+   python scripts/04_modeling.py
+   ```
+6. **Run evaluation & visualization:**
+   ```bash
+   python scripts/05_evaluation_visualization.py
+   ```
+
