@@ -25,3 +25,23 @@ def encode_and_scale(df):
     y = df['difficulty']
     return X, y
 
+def split_data(X, y):
+    return train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+def save_splits(X_train, X_test, y_train, y_test):
+    out_dir = os.path.join('..', 'outputs', 'features')
+    os.makedirs(out_dir, exist_ok=True)
+    X_train.to_csv(os.path.join(out_dir, 'X_train.csv'), index=False)
+    X_test.to_csv(os.path.join(out_dir, 'X_test.csv'), index=False)
+    y_train.to_csv(os.path.join(out_dir, 'y_train.csv'), index=False)
+    y_test.to_csv(os.path.join(out_dir, 'y_test.csv'), index=False)
+
+def main():
+    df = load_data(os.path.join('..', 'outputs', 'processed', 'processed_data.csv'))
+    df = create_thematic_scores(df)
+    X, y = encode_and_scale(df)
+    X_train, X_test, y_train, y_test = split_data(X, y)
+    save_splits(X_train, X_test, y_train, y_test)
+
+if __name__ == "__main__":
+    main()
